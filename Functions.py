@@ -38,8 +38,10 @@ def formato(let):
   new_string=str()
   indice = re.finditer(pattern='-',string=let)
   ind=[index.start() for index in indice]
-  if ( let[ind[1]+1] == '0'):
+  if ( let[ind[1]+1] == '0' and let[ind[1]+2] != '0' ):
     new_string = let[:ind[1]+1] + let[ind[1]+2:]
+  elif(let[ind[1]+1] == '0' and let[ind[1]+2] == '0'):
+     new_string = let[:ind[1]+1] + let[ind[1]+3:] 
   else:
      new_string=let
   return new_string
@@ -53,14 +55,27 @@ def check():
   return diff
  
 def open_popup():
-   pg.theme("DarkAmber")  
-   layout=[
-      [pg.Text("Tudo Ok")],
-      [pg.Button("OK"), pg.Button("Cancel")]
-   ]
-   window= pg.Window("Form",layout)
-   while True:
-      print(window.read())
-      break
+  if(len(diff)==0):
+      pg.theme("DarkAmber")  
+      layout=[
+          [pg.Text("Nenhuma Iconsistência encontrada")],
+          [pg.Button("OK"), pg.Button("Cancel")]
+      ]
+      window= pg.Window("Tabela de Inconsistências",layout)
+      while True:
+          print(window.read())
+          break
+  else:
+      pg.theme("DarkRed")  
+      layout=[
+          [pg.Text(f'Inconsistências Encontradas em: \n {diff}')],
+          [pg.Button("OK"), pg.Button("Cancel")]
+      ]
+      window= pg.Window("Tabela de Inconsistências",layout)
+      while True:
+          print(window.read())
+          break 
+       
    
     
+
