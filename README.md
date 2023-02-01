@@ -1,1 +1,0 @@
-# Verficador-Excel
