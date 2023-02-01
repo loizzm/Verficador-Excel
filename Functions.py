@@ -78,12 +78,9 @@ def formato(let):
   indice = re.finditer(pattern='-',string=let)
   ind=[index.start() for index in indice]
   if ( let[ind[1]+1] == '0' and let[ind[1]+2] != '0' ):
-  if ( let[ind[1]+1] == '0' and let[ind[1]+2] != '0' ):
     new_string = let[:ind[1]+1] + let[ind[1]+2:]
   elif(let[ind[1]+1] == '0' and let[ind[1]+2] == '0'):
-     new_string = let[:ind[1]+1] + let[ind[1]+3:] 
-  elif(let[ind[1]+1] == '0' and let[ind[1]+2] == '0'):
-     new_string = let[:ind[1]+1] + let[ind[1]+3:] 
+     new_string = let[:ind[1]+1] + let[ind[1]+3:]
   else:
      new_string=let
   return new_string
