@@ -1,8 +1,8 @@
 <h1>Documentação</h1>
   <h2>Introdução</h2>
-    <p><em>Em diversas ocasiões temos que comparar listas de equipamentos com planilha de quantidades, além de ser um tarefa demorada,</br>
-    requer muita atenção. Nesse contexto, esse recurso funciona como um verificador de equidade entre as duas planilhas. Tendo como objetivo</br>
-    uma economia de tempo e uma verificação mais consistente</em></p>
+    <p><em>Em diversas ocasiões temos que comparar listas de equipamentos com planilha de quantidades, além de ser um tarefa</br>
+    demorada, requer muita atenção. Nesse contexto, esse recurso funciona como um verificador de equidade entre as duas</br>
+    planilhas. Tendo como objetivo uma economia de tempo e uma verificação mais consistente</em></p>
   <h2>Restrições</h2>
     <p><em>Bom, para compreender o funcionamento do código é importante ser dito o que <strong>não</strong> dever ser feito com ele.</em></p>
     <p><em>Restrições da aplicação</em></p>
@@ -19,6 +19,7 @@
       <li><em>.xltm</em></li>
     </ul>
   <h2>Passo a Passo</h2>
-    <p><em>Primeiramente, é importante ser dito que para um melhor encapsulamneto do código e para uma diminuição na quantidade de possíveis</br>
-    erros, não haverá interação direta com o código. A aplicação funcionará da seguinte forma, será baixado um executável(.exe)</br>
-     e nele será inserido os caminhos para os arquivos desejados e o código se encarregará do resto. Feito isso, o usário só terá que executar o arquivo e um pop-up    aparecerá alertando-o de inconsistências encontradas entre os arquivos.</em></p>
+    <p><em>Primeiramente, é importante ser dito que para um melhor encapsulamneto do código e para uma diminuição na quantidade</br>
+    de possíveis erros, não haverá interação direta com o código. A aplicação funcionará da seguinte forma, será baixado</br>
+     um executável(.exe) e nele será inserido os caminhos para os arquivos desejados e o código se encarregará do resto. Feito isso,</br>
+     o usário só terá que executar o  arquivo e um pop-up    aparecerá alertando-o de inconsistências encontradas entre os arquivos.</em></p>
