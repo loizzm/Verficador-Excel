@@ -9,11 +9,12 @@ Verficador={}
 Verficando={}
 diff1={}
 diff={}
+doppel={}
 
-def Begin():
+def Begin(): #Função principal, começa o programa e chama todas as outas
     pg.theme("DarkBlue")
     layout=[
-              [pg.Text(f'Insira os caminhos dos arquivos:',font = ("Bold", 11))],
+              [pg.Text(f'Insira os caminhos dos arquivos:',font = ("Bold", 11))],    #Cria a tela incial
               [pg.Text('Lista:', size =(15, 1)), pg.InputText(key='-Lista-')],
               [pg.Text('PQ:', size =(15, 1)), pg.InputText(key='-Pq-')],
               [pg.Button("Submit"), pg.Button("Cancel")]
@@ -21,22 +22,22 @@ def Begin():
     window= pg.Window('Excel-Verificador',layout)
     event,values = window.read()
     window.close()
-    if (check_Files(values['-Pq-']) and check_Files(values['-Lista-'])):
-      open_Le(values['-Lista-'])
-      open_PQ(values['-Pq-'])
-      check_PQ_LE()
-      check_LE_PQ()
-      open_popup()
+    if (check_Files(values['-Pq-']) and check_Files(values['-Lista-'])): # Checa se os caminhos inseridos estão completos e se são dos arquivos certos
+      open_Le(values['-Lista-'])                                         # abre a Le e faz todas as operações necessárias
+      open_PQ(values['-Pq-'])                                             #abre a PQ e faz todas as operações necessárias
+      check_PQ_LE()                                                      #Checa as incosistências PQ -> LE
+      check_LE_PQ()                                                        #Checa as incosistências LE -> PQ
+      open_popup()                                                         #Feito as operações de comparação, é aberto a janela de inconsistências
 
 def check_Files(file):
-    if(file.find('.xlsx') or file.find('.xlsm')):
+    if(file.find('.xlsx') or file.find('.xlsm')):                        #Verfica se os arquivos estão no formato correto
        return True
        
     else:
        raise ValueError("Formato .xls não suportado")
    
-def check_pattern(letter):
-  pattern= '(\D{2,3})-(\w{5,10})-(\d{2,4})'
+def check_pattern(letter):                                                # Verfica se o conteúdo da célula é um tag
+  pattern= '(\D{2,3})-(\w{5,10})-(\d{2,4})'                               # \D{2,3}= entre 2 a 3 não dígitos -(\w{5,10})- = -entre 5 a 10 alfanúmericos-  \d{2,4} = entre 2 a 4 dígitos
   match = re.search(pattern, letter)
   if (match != None):
      return True
@@ -45,7 +46,8 @@ def check_pattern(letter):
 
     
 
-def open_Le(element):
+def open_Le(element):                                                     # abre a LE e realiza as operações de iterar, testar valores, formatar e guardar o conteúdo em um dicionário
+  aux=str()
   theFile = openpyxl.load_workbook(element)
   allSheetNames = theFile.sheetnames
   for sheet in allSheetNames:
@@ -53,12 +55,14 @@ def open_Le(element):
      for row in range(14, currentSheet.max_row + 1):
           cell_name = "{}{}".format("A", row)
           if (currentSheet[cell_name].value != None and  currentSheet[cell_name].value != "-" and check_pattern(currentSheet[cell_name].value) == True):
-            Verficando[formato(currentSheet[cell_name].value)]= f'Equipamentos:{cell_name}'
+            aux=formato(currentSheet[cell_name].value)
+            if(check_duplicates_Le(aux,cell_name)):
+              Verficando[aux]= f'Equipamentos:{cell_name}'
 
   return Verficando
   
   
-def open_PQ(element):
+def open_PQ(element):                                                     # abre a PQ e realiza as operações de iterar, testar valores, formatar e guardar o conteúdo em um dicionário
   theFile = openpyxl.load_workbook(element)
   allSheetNames = theFile.sheetnames
   for sheet in allSheetNames:
@@ -68,12 +72,14 @@ def open_PQ(element):
         if (currentSheet[cell_name].value != None and  currentSheet[cell_name].value != "-"):
           aux=currentSheet[cell_name].value[:3] + str(sheet) + "-"+ currentSheet[cell_name].value[3:]
           if (check_pattern(aux)): 
-            Verficador[formato(aux)]= f'Sheet:{sheet}:{cell_name}'
+            aux=formato(aux)
+            if(check_duplicates_Pq(aux,cell_name)):
+              Verficador[aux]= f'Sheet:{sheet}:{cell_name}'
           
   return Verficador  
 
 
-def formato(let):
+def formato(let):                                                # formata os tags econtrados visto que podem haver 1 ou 2 zeros antes do número de fato, ex : PB-6027SA-04 ou IT-6027SA-008
   new_string=str()
   indice = re.finditer(pattern='-',string=let)
   ind=[index.start() for index in indice]
@@ -95,8 +101,22 @@ def check_LE_PQ():
       if ( (not (element in Verficador.keys()))):
         diff1[element]=val
 
+def check_duplicates_Le(aux,cell):
+   if (aux in Verficando):
+      doppel[aux]=f'Le:{cell}'
+      return False
+   else:
+      return True
+   
+def check_duplicates_Pq(aux,cell):
+   if (aux in Verficador):
+      doppel[aux]= f'PQ:{cell}'
+      return False
+   else:
+      return True
+
 def open_popup():
-  if(len(diff)==0):
+  if(len(diff)==0 and len(diff1) == 0 and len(doppel)==0):
       pg.theme("DarkAmber")  
       layout=[
           [pg.Text("Nenhuma Iconsistência encontrada")],
@@ -112,12 +132,13 @@ def open_popup():
       s += '\n'.join([str(i) for i in diff.items()])
       s1 = '***Itens não presentes na PQ***\n'
       s1 += '\n'.join([str(i) for i in diff1.items()])
-      text= s+'\n'+s1
+      s2 =  '***Itens Duplicados***\n'
+      s2 += '\n'.join([str(i) for i in doppel.items()])
+      text= s+'\n'+s1+'\n'+s2
       column = [[pg.Text(text, font=('Courier New', 12))]]
       layout=[
           [pg.Text(f'Inconsistências Encontradas em:', font=('Bold', 16))],
           [pg.Column(column, size=(800, 300), scrollable=True, key = "Column")],
-          #[pg.Text(text)],
           [pg.Button("OK"), pg.Button("Cancel")]
       ]
       window= pg.Window("Tabela de Inconsistências",layout)
