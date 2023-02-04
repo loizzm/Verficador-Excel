@@ -13,28 +13,22 @@ doppel={}
 
 def Begin(): #Função principal, começa o programa e chama todas as outas
     pg.theme("DarkBlue")
-    layout=[
-              [pg.Text(f'Insira os caminhos dos arquivos:',font = ("Bold", 11))],    #Cria a tela incial
-              [pg.Text('Lista:', size =(15, 1)), pg.InputText(key='-Lista-')],
-              [pg.Text('PQ:', size =(15, 1)), pg.InputText(key='-Pq-')],
+    layout=[                                                                                        #Cria a tela incial
+              [pg.Text('Lista de Equipamentos:', size=(13,2))],
+              [pg.Input(), pg.FileBrowse(key='-Lista-',file_types=(("Excel", "*.xlsx"),("Excel", "*.xlsm")))],
+              [pg.Text('Planilha de Quantidades: ', size=(13,2))],
+              [pg.Input(), pg.FileBrowse(key='-Pq-',file_types=(("Excel", "*.xlsx"),("Excel", "*.xlsm")))],
               [pg.Button("Submit"), pg.Button("Cancel")]
           ]
-    window= pg.Window('Excel-Verificador',layout)
+    window= pg.Window('Verificador',layout, size=(450,200))
     event,values = window.read()
     window.close()
-    if (check_Files(values['-Pq-']) and check_Files(values['-Lista-'])): # Checa se os caminhos inseridos estão completos e se são dos arquivos certos
-      open_Le(values['-Lista-'])                                         # abre a Le e faz todas as operações necessárias
-      open_PQ(values['-Pq-'])                                             #abre a PQ e faz todas as operações necessárias
-      check_PQ_LE()                                                      #Checa as incosistências PQ -> LE
-      check_LE_PQ()                                                        #Checa as incosistências LE -> PQ
-      open_popup()                                                         #Feito as operações de comparação, é aberto a janela de inconsistências
+    open_Le(values['-Lista-'])                                         # abre a Le e faz todas as operações necessárias
+    open_PQ(values['-Pq-'])                                             #abre a PQ e faz todas as operações necessárias
+    check_PQ_LE()                                                      #Checa as incosistências PQ -> LE
+    check_LE_PQ()                                                        #Checa as incosistências LE -> PQ
+    open_popup()                                                         #Feito as operações de comparação, é aberto a janela de inconsistências
 
-def check_Files(file):
-    if(file.find('.xlsx') or file.find('.xlsm')):                        #Verfica se os arquivos estão no formato correto
-       return True
-       
-    else:
-       raise ValueError("Formato .xls não suportado")
    
 def check_pattern(letter):                                                # Verfica se o conteúdo da célula é um tag
   pattern= '(\D{2,3})-(\w{5,10})-(\d{2,4})'                               # \D{2,3}= entre 2 a 3 não dígitos -(\w{5,10})- = -entre 5 a 10 alfanúmericos-  \d{2,4} = entre 2 a 4 dígitos
@@ -43,9 +37,7 @@ def check_pattern(letter):                                                # Verf
      return True
   else:
      return False      
-
-    
-
+ 
 def open_Le(element):                                                     # abre a LE e realiza as operações de iterar, testar valores, formatar e guardar o conteúdo em um dicionário
   aux=str()
   theFile = openpyxl.load_workbook(element)
