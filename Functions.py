@@ -44,9 +44,9 @@ def open_Le(element):                                                     # abre
   allSheetNames = theFile.sheetnames
   for sheet in allSheetNames:
      currentSheet = theFile[sheet]
-     for row in range(14, currentSheet.max_row + 1):
+     for row in range(1, currentSheet.max_row + 1):
           cell_name = "{}{}".format("A", row)
-          if (currentSheet[cell_name].value != None and  currentSheet[cell_name].value != "-" and check_pattern(currentSheet[cell_name].value) == True):
+          if (currentSheet[cell_name].value != None and  currentSheet[cell_name].value != "-" and check_pattern(str(currentSheet[cell_name].value)) == True):
             aux=formato(currentSheet[cell_name].value)
             if(check_duplicates_Le(aux,cell_name)):
               Verficando[aux]= f'Equipamentos:{cell_name}'
