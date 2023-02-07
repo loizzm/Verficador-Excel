@@ -11,7 +11,7 @@ diff1={}
 diff={}
 doppel={}
 
-def Begin(): #Função principal, começa o programa e chama todas as outas
+def Begin():                                              #Função principal, começa o programa e chama todas as outas
     pg.theme("DarkBlue")
     layout=[                                                                                        #Cria a tela incial
               [pg.Text('Lista de Equipamentos:', size=(13,2))],
@@ -62,7 +62,9 @@ def open_PQ(element):                                                     # abre
      for row in range(12, currentSheet.max_row + 1):
         cell_name = "{}{}".format("D", row)
         if (currentSheet[cell_name].value != None and  currentSheet[cell_name].value != "-"):
-          aux=currentSheet[cell_name].value[:3] + str(sheet) + "-"+ currentSheet[cell_name].value[3:]
+          cell_auxc = "{}{}".format("C", row)
+          cell_auxb = "{}{}".format("B", row)
+          aux=currentSheet[cell_name].value[:3] + str(currentSheet[cell_auxb].value) + str(currentSheet[cell_auxc].value) +"-"+ currentSheet[cell_name].value[3:]
           if (check_pattern(aux)): 
             aux=formato(aux)
             if(check_duplicates_Pq(aux,cell_name)):
@@ -120,16 +122,16 @@ def open_popup():
           break
   else:
       pg.theme("DarkRed")
-      s = '***Itens não presentes na Lista***\n'
+      s = '\n***Itens não presentes na Lista***\n\n'
       s += '\n'.join([str(i) for i in diff.items()])
-      s1 = '***Itens não presentes na PQ***\n'
+      s1 = '\n***Itens não presentes na PQ***\n\n'
       s1 += '\n'.join([str(i) for i in diff1.items()])
-      s2 =  '***Itens Duplicados***\n'
+      s2 =  '\n***Itens Duplicados***\n\n'
       s2 += '\n'.join([str(i) for i in doppel.items()])
       text= s+'\n'+s1+'\n'+s2
       column = [[pg.Text(text, font=('Courier New', 12))]]
       layout=[
-          [pg.Text(f'Inconsistências Encontradas em:', font=('Bold', 16))],
+          [pg.Text(f'Inconsistências Encontradas:', font=('Bold', 16))],
           [pg.Column(column, size=(800, 300), scrollable=True, key = "Column")],
           [pg.Button("OK"), pg.Button("Cancel")]
       ]
