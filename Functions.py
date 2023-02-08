@@ -46,14 +46,25 @@ def open_Le(element):                                                     # abre
      currentSheet = theFile[sheet]
      for row in range(1, currentSheet.max_row + 1):
           cell_name = "{}{}".format("A", row)
-          if (currentSheet[cell_name].value != None and  currentSheet[cell_name].value != "-" and check_pattern(str(currentSheet[cell_name].value)) == True):
-            aux=formato(currentSheet[cell_name].value)
-            if(check_duplicates_Le(aux,cell_name)):
-              Verficando[aux]= f'Equipamentos:{cell_name}'
+          cell_area= "{}{}".format("I", row)
+          cell_value= "{}{}".format("G", row)
+          if (currentSheet[cell_name].value == "-"):
+            aux1=untagged_Le(currentSheet[cell_area].value)
+            Verficando[f'Sem tagg {aux1}'] =  Verficando.get(f'Sem tagg {aux1}',0) + currentSheet[cell_value].value
+          else:
+            if (currentSheet[cell_name].value != None and check_pattern(str(currentSheet[cell_name].value)) == True):
+              aux=formato(currentSheet[cell_name].value)
+              if(check_duplicates_Le(aux,cell_name)):
+                Verficando[aux]= f'Equipamentos:{cell_name}'
+
 
   return Verficando
-  
-  
+
+def untagged_Le(letter):
+   indice = re.finditer(pattern=' ',string=letter)
+   ind=[index.start() for index in indice]
+   return letter[:ind[0]]
+
 def open_PQ(element):                                                     # abre a PQ e realiza as operações de iterar, testar valores, formatar e guardar o conteúdo em um dicionário
   theFile = openpyxl.load_workbook(element)
   allSheetNames = theFile.sheetnames
@@ -61,17 +72,20 @@ def open_PQ(element):                                                     # abre
      currentSheet = theFile[sheet]
      for row in range(12, currentSheet.max_row + 1):
         cell_name = "{}{}".format("D", row)
-        if (currentSheet[cell_name].value != None and  currentSheet[cell_name].value != "-"):
-          cell_auxc = "{}{}".format("C", row)
-          cell_auxb = "{}{}".format("B", row)
-          aux=currentSheet[cell_name].value[:3] + str(currentSheet[cell_auxb].value) + str(currentSheet[cell_auxc].value) +"-"+ currentSheet[cell_name].value[3:]
-          if (check_pattern(aux)): 
-            aux=formato(aux)
-            if(check_duplicates_Pq(aux,cell_name)):
-              Verficador[aux]= f'Sheet:{sheet}:{cell_name}'
+        cell_auxc = "{}{}".format("C", row)
+        cell_auxb = "{}{}".format("B", row)
+        cell_value = "{}{}".format("Q", row)
+        if(currentSheet[cell_name].value == "-"):
+          Verficador[f'Sem tagg {str(currentSheet[cell_auxb].value) + str(currentSheet[cell_auxc].value)}'] =  Verficador.get(f'Sem tagg {str(currentSheet[cell_auxb].value) + str(currentSheet[cell_auxc].value)}',0) + currentSheet[cell_value].value
+        else:
+          if (currentSheet[cell_name].value != None):
+            aux=currentSheet[cell_name].value[:3] + str(currentSheet[cell_auxb].value) + str(currentSheet[cell_auxc].value) +"-"+ currentSheet[cell_name].value[3:]
+            if (check_pattern(aux)): 
+              aux=formato(aux)
+              if(check_duplicates_Pq(aux,cell_name)):
+                Verficador[aux]= f'Sheet:{sheet}:{cell_name}'
           
   return Verficador  
-
 
 def formato(let):                                                # formata os tags econtrados visto que podem haver 1 ou 2 zeros antes do número de fato, ex : PB-6027SA-04 ou IT-6027SA-008
   new_string=str()
