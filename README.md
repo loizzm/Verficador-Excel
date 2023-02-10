@@ -31,9 +31,7 @@
       a formtação acima é inválida, entretanto, "PB-6027SA-002", "PB-6027SA-02" ou "PB-6027SA-2" são formatações válidas. Além disso,</br>
        vale a pena ser dito que a formatação descrita acima é válida tanto para a PQ quanto para LE, todavia, na PQ não necessidade de </br>
         inserir o identificador de área, o próprio código se encarregará disso. Exemplos de formatação correta para PQ são: "PB-02", </br>
-        "PB-002" e "PB-2". Por último, é importante ser ressaltado que, idealmente, a PQ deve ter seus quipamentos divididos por abas</br>
-        cujos nomes devem corresponder à área em que se encontram. Já na LE, fica a cargo do elbaorador dividir por abas ou inserir todos</br>
-        em uma mesma aba.</em></strong></p>
+        "PB-002" e "PB-2".</em></strong></p>
         
   <h2>Passo a Passo</h2>
     <p><em>Primeiramente, é importante ser dito que para um melhor encapsulamneto do código e para uma diminuição na </br>
