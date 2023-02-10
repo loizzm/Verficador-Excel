@@ -10,7 +10,6 @@
     <p><em>Restrições da aplicação:</em></p>
     <ul>
       <li><em>De forma alguma os arquivos usados para comparação devem estar no formato <strong>.xls</strong></em></li>
-      <li><em>O código descrito <strong>ainda</strong> não possui a função de verificar equipamentos não taggeados</em></li>
     </ul>
   <h3>Exemplos de Restrições:</h3>
     <p><strong><em>Arquivos suportados pelo programa:</em></strong></p>
