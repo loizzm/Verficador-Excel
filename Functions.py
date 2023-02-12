@@ -31,7 +31,7 @@ def Begin():                                              #Função principal, c
 
    
 def check_pattern(letter):                                                # Verfica se o conteúdo da célula é um tag
-  pattern= '(\D{2,3})-(\w{5,10})-(\d{2,4})'                               # \D{2,3}= entre 2 a 3 não dígitos -(\w{5,10})- = -entre 5 a 10 alfanúmericos-  \d{2,4} = entre 2 a 4 dígitos
+  pattern= '^(\D{2,3})-(\w{5,10})-(\d{2,4})$'                              # \D{2,3}= entre 2 a 3 não dígitos -(\w{5,10})- = -entre 5 a 10 alfanúmericos-  \d{2,4} = entre 2 a 4 dígitos
   match = re.search(pattern, letter)
   if (match != None):
      return True
