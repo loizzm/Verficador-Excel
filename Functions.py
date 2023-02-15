@@ -65,25 +65,34 @@ def untagged_Le(letter):
    ind=[index.start() for index in indice]
    return letter[:ind[0]]
 
-def open_PQ(element):                                                     # abre a PQ e realiza as operações de iterar, testar valores, formatar e guardar o conteúdo em um dicionário
+def open_PQ(element):
+  exit=0
+  fm_list=[]                                               # abre a PQ e realiza as operações de iterar, testar valores, formatar e guardar o conteúdo em um dicionário
   theFile = openpyxl.load_workbook(element)
   allSheetNames = theFile.sheetnames
   for sheet in allSheetNames:
-     currentSheet = theFile[sheet]
-     for row in range(12, currentSheet.max_row + 1):
-        cell_name = "{}{}".format("D", row)
-        cell_auxc = "{}{}".format("C", row)
-        cell_auxb = "{}{}".format("B", row)
-        cell_value = "{}{}".format("Q", row)
-        if(currentSheet[cell_name].value == "-"):
-          Verficador[f'Sem tagg {str(currentSheet[cell_auxb].value) + str(currentSheet[cell_auxc].value)}'] =  Verficador.get(f'Sem tagg {str(currentSheet[cell_auxb].value) + str(currentSheet[cell_auxc].value)}',0) + currentSheet[cell_value].value
-        else:
+      if(exit==1):
+         break
+      currentSheet = theFile[sheet]
+      for row in range(12, currentSheet.max_row + 1):
+          cell_name = "{}{}".format("D", row)
           if (currentSheet[cell_name].value != None):
-            aux=currentSheet[cell_name].value[:3] + str(currentSheet[cell_auxb].value) + str(currentSheet[cell_auxc].value) +"-"+ currentSheet[cell_name].value[3:]
-            if (check_pattern(aux)): 
-              aux=formato(aux)
-              if(check_duplicates_Pq(aux,cell_name)):
-                Verficador[aux]= f'Sheet:{sheet}:{cell_name}'
+            cell_auxc = "{}{}".format("C", row)
+            cell_auxb = "{}{}".format("B", row)
+            cell_value = "{}{}".format("Q", row)
+            cell_fm = "{}{}".format("E", row)
+            if(diff_FM(fm_list, str(currentSheet[cell_fm].value))):
+              if(currentSheet[cell_name].value == "-"):
+                Verficador[f'Sem tagg {str(currentSheet[cell_auxb].value) + str(currentSheet[cell_auxc].value)}'] =  Verficador.get(f'Sem tagg {str(currentSheet[cell_auxb].value) + str(currentSheet[cell_auxc].value)}',0) + currentSheet[cell_value].value
+              else:
+                  aux=currentSheet[cell_name].value[:3] + str(currentSheet[cell_auxb].value) + str(currentSheet[cell_auxc].value) +"-"+ currentSheet[cell_name].value[3:]
+                  if (check_pattern(aux)): 
+                    aux=formato(aux)
+                    if(check_duplicates_Pq(aux,cell_name)):
+                      Verficador[aux]= f'Sheet:{sheet}:{cell_name}'
+            else:
+              exit=1
+              break
           
   return Verficador  
 
@@ -103,11 +112,18 @@ def check_PQ_LE():
   for element, val in Verficador.items():
     if ( not (element in Verficando)):
       diff[element]=val
+    ##else:
+      ## if(element.find("Sem tagg") != -1):
+        ##  diff[element]= val - diff1[element]
  
 def check_LE_PQ():
     for element, val in Verficando.items():
       if ( (not (element in Verficador.keys()))):
         diff1[element]=val
+      ##else:
+        ##if(element.find("Sem tagg") != -1):
+          ##  diff1[element]= val - diff[element]
+         
 
 def check_duplicates_Le(aux,cell):
    if (aux in Verficando):
@@ -122,6 +138,21 @@ def check_duplicates_Pq(aux,cell):
       return False
    else:
       return True
+   
+def diff_FM(list,string):
+  if(string=="F" or string == "M"):
+      if(len(list)==0):
+        list.append(string)
+        return True
+      else:
+         for element in list:
+            if(string==element):
+              return True
+            else:
+              return False
+  else:
+      return True
+            
 
 def open_popup():
   if(len(diff)==0 and len(diff1) == 0 and len(doppel)==0):
