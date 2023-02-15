@@ -1,6 +1,7 @@
 import PySimpleGUI as pg 
 import Functions
 import MoreFunctions
+import Format
 
 
 pg.theme("DarkBlue")
@@ -14,6 +15,8 @@ event,values = window.read()
 if (event == 'Submit'):
     if(values['board']=="Verificar LE/PQ"):
         Functions.Begin()
+    elif(values['board']=="Formatar PQ"):
+        Format.Begin()
     else:
         MoreFunctions.Begin()
 window.close()
