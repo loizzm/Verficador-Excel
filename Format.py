@@ -42,7 +42,7 @@ def c_by_v(color,lista):                                                 ## Reto
             lista.append(value)
             return value
         
-        elif((color=='FFCC00'or color=='00FFCC00') and len(lista[-1])>1):    ## para uma aparição da cor laranja mais amarelado depois de um branco, por isso o len do úlitmo elemneto regisrado na lista tem que ser maior que 1
+        elif((color=='FFCC00'or color=='00FFCC00') and len(lista[-1])>=9):    ## para uma aparição da cor laranja mais amarelado depois de um branco, por isso o len do úlitmo elemneto regisrado na lista tem que ser maior que 9
             value= lista[find_color(color,lista)]                            ## retorna o úlitmo indice da lista onde essa cor foi encontrada
             aux= float(value)                                                ## Transfoma em float
             aux += 0.1                                                       ## soma 0,1 n0 valor anterior, ou seja "1.1 + 0.1 = 1.2"
@@ -57,7 +57,7 @@ def c_by_v(color,lista):                                                 ## Reto
             lista.append(value)
             return value
         
-        elif(color=='FFE68D' and len(lista[-1])>3):                        ## Para um aparição depois de uma célula branca, por isso o len do úlitmo item da lista tem que ter tamanho maior que 3
+        elif(color=='FFE68D' and len(lista[-1])>=9):                        ## Para um aparição depois de uma célula branca, por isso o len do úlitmo item da lista tem que ter tamanho maior que 9
             value= lista[find_color(color,lista)]
             aux = int(value[4])                                            ##Pega o último valor da última aparição registrada dessa cor, por isso o 4 ("1.1.1")
             aux +=1
@@ -72,7 +72,7 @@ def c_by_v(color,lista):                                                 ## Reto
             lista.append(value)
             return value
         
-        elif(color == 'FFFF99'and len(lista[-1])>5):                   ## Para uma aparição do amareloa mais fraco depois de um branco, por isso o len > 5
+        elif(color == 'FFFF99'and len(lista[-1])>=9):                   ## Para uma aparição do amareloa mais fraco depois de um branco, por isso o len > 9
             value= lista[find_color(color,lista)]
             aux = int(value[6])
             aux +=1
