@@ -10,6 +10,7 @@
     <p><em>Restrições da aplicação:</em></p>
     <ul>
       <li><em>De forma alguma os arquivos usados para comparação devem estar no formato <strong>.xls</strong></em></li>
+      <li><em> Usar sempre as mesmas cores da SPE na Plainilha de Quantidades</em></li>
     </ul>
   <h3>Exemplos de Restrições:</h3>
     <p><strong><em>Arquivos suportados pelo programa:</em></strong></p>
@@ -37,7 +38,7 @@
     <p><em>Primeiramente, é importante ser dito que para um melhor encapsulamneto do código e para uma diminuição na </br>
     quantidade de possíveis erros, não haverá interação direta com o código. A aplicação funcionará da seguinte forma, será baixado</br>
      um executável(.exe) e nele será inserido os caminhos para os arquivos desejados e o código se encarregará do resto. Feito isso,</br>
-     o usário só terá que executar o  arquivo e um pop-up    aparecerá alertando-o de inconsistências encontradas</br>
+     o usário só terá que executar o  arquivo e um pop-up aparecerá alertando-o de inconsistências encontradas</br>
      entre os arquivos.</em></p>
       <h3>Demonstração:</h3>
           <p><em>Primeiro, clique duas vezes no arquivo <strong>main.exe</strong>. Feito isso, você verá essa tela:</p></em>
