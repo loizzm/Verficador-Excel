@@ -2,7 +2,7 @@ import openpyxl
 from openpyxl.styles import colors
 import PySimpleGUI as pg 
 
-allowed_colors=['FF9900','00FF9900','FFCC00','00FFCC00','FFE68D','FFFF99','000000']  ##Cores permitidas pela SPE
+allowed_colors=['FF9900','00FF9900','FFCC00','00FFCC00','FFE68D','00FFFF99','FFFF99','000000']  ##Cores permitidas pela SPE
 
 def find_color(color,lista):                                            ## Serve para procurar a última vez que uma cor foi encontrada, visto que normalmente existe itens em branco antes das cores principais
       if (color=='FF9900' or color=='00FF9900'):                        ## Nõa há branco descrito nessa função, pois nunca o branco virá entre duas cores diferentes de branco
@@ -14,7 +14,7 @@ def find_color(color,lista):                                            ## Serve
       elif(color == 'FFE68D'):
           indices = [i for i, x in enumerate(lista) if (len(x)==5)]
           return indices[-1]
-      elif(color == 'FFFF99'):
+      elif(color == 'FFFF99' or color == '00FFFF99' ):
           indices = [i for i, x in enumerate(lista) if (len(x)==7)]
           return indices[-1]
 
@@ -66,13 +66,13 @@ def c_by_v(color,lista):                                                 ## Reto
             lista.append(value)
             return(value)
 
-        elif(color == 'FFFF99'and len(lista[-1])==5):                     ##Para uma primeira aparição do amarelo mais fraco, vindo depois de um amrelo, por isso o len ==5 (1.1.1)
+        elif((color == 'FFFF99' or color == '00FFFF99') and len(lista[-1])==5):                     ##Para uma primeira aparição do amarelo mais fraco, vindo depois de um amrelo, por isso o len ==5 (1.1.1)
             value = (lista[-1])
             value = value + '.1'
             lista.append(value)
             return value
         
-        elif(color == 'FFFF99'and len(lista[-1])>=9):                   ## Para uma aparição do amareloa mais fraco depois de um branco, por isso o len > 9
+        elif((color == 'FFFF99' or color == '00FFFF99') and len(lista[-1])>=9):                   ## Para uma aparição do amareloa mais fraco depois de um branco, por isso o len > 9
             value= lista[find_color(color,lista)]
             aux = int(value[6])
             aux +=1
@@ -145,10 +145,15 @@ def Begin():
             if (type(cell).__name__ != 'MergedCell'):
                 if (cell.fill.start_color.type == 'rgb'):
                     color_hex = cell.fill.start_color.rgb[2:] # Remove o caractere '#' do início da string
+
+                elif (cell.fill.start_color.type == 'indexed'):
+                    indexed_color = cell.fill.start_color.indexed
+                    color_hex = openpyxl.styles.colors.COLOR_INDEX[indexed_color]
+                    
+
                 else:
-                    if (cell.fill.start_color.type == 'indexed'):
-                        indexed_color = cell.fill.start_color.indexed
-                        color_hex = openpyxl.styles.colors.COLOR_INDEX[indexed_color]
+                    color_hex ='000000'
+                        
                 if(currentSheet[cell_exit].value == None and len(lista) != 0):                          ##Para resolver o problema do código escrever onde não devia
                     break
                 if(color_hex in allowed_colors):
