@@ -10,6 +10,7 @@
     <p><em>Restrições da aplicação:</em></p>
     <ul>
       <li><em>De forma alguma os arquivos usados para comparação devem estar no formato <strong>.xls</strong></em></li>
+      <li><em> Usar sempre as mesmas cores da SPE na Plainilha de Quantidades</em></li>
     </ul>
   <h3>Exemplos de Restrições:</h3>
     <p><strong><em>Arquivos suportados pelo programa:</em></strong></p>
@@ -37,12 +38,12 @@
     <p><em>Primeiramente, é importante ser dito que para um melhor encapsulamneto do código e para uma diminuição na </br>
     quantidade de possíveis erros, não haverá interação direta com o código. A aplicação funcionará da seguinte forma, será baixado</br>
      um executável(.exe) e nele será inserido os caminhos para os arquivos desejados e o código se encarregará do resto. Feito isso,</br>
-     o usário só terá que executar o  arquivo e um pop-up    aparecerá alertando-o de inconsistências encontradas</br>
+     o usário só terá que executar o  arquivo e um pop-up aparecerá alertando-o de inconsistências encontradas</br>
      entre os arquivos.</em></p>
       <h3>Demonstração:</h3>
           <p><em>Primeiro, clique duas vezes no arquivo <strong>main.exe</strong>. Feito isso, você verá essa tela:</p></em>
-          <img src="https://user-images.githubusercontent.com/114931499/216100902-f3c05b1a-890d-4e6e-92c9-53313541881f.png" width"400px">
-          <p><em>Agora, insira os caminhos dos arquivos em seus respectivos lugares, mas antes lembre-se que</br>
+          <img src="https://user-images.githubusercontent.com/114931499/220966103-6c2302de-2b23-4b79-942e-29dddcc29de4.png" width"400px">
+          <p><em>Escolhida a funcionalidade, clique em "Submit".Agora, insira os caminhos dos arquivos em seus respectivos lugares, mas antes lembre-se que</br>
            a extensão correta é (.xlsx ou .xlsm). Caso algum dos arquivos não esteja na extensão correta, abra ele, vá em salvar</br>
            como e salve com a extensão correta. Por úlitmo, tendo certeza que as extensões e os caminhos estão</br>
            corretos clique em "Submit" e espere.</p></em>
