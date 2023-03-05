@@ -2,7 +2,7 @@ import openpyxl
 from openpyxl.styles import colors
 import PySimpleGUI as pg 
 
-allowed_colors=['FF9900','00FF9900','FFCC00','00FFCC00','FFE68D','00FFFF99','FFFF99','000000']  ##Cores permitidas pela SPE
+allowed_colors=['FF9900','00FF9900','FFCC00','00FFCC00','00FFE68D','FFE68D','00FFFF99','FFFF99','000000']  ##Cores permitidas pela SPE
 
 def find_color(color,lista):                                            ## Serve para procurar a última vez que uma cor foi encontrada, visto que normalmente existe itens em branco antes das cores principais
       if (color=='FF9900' or color=='00FF9900'):                        ## Nõa há branco descrito nessa função, pois nunca o branco virá entre duas cores diferentes de branco
@@ -11,7 +11,7 @@ def find_color(color,lista):                                            ## Serve
       elif(color=='FFCC00'or color=='00FFCC00'):
           indices = [i for i, x in enumerate(lista) if (len(x)==3)]
           return indices[-1]
-      elif(color == 'FFE68D'):
+      elif(color == 'FFE68D' or color  == '00FFE68D' ):
           indices = [i for i, x in enumerate(lista) if (len(x)==5)]
           return indices[-1]
       elif(color == 'FFFF99' or color == '00FFFF99' ):
@@ -51,13 +51,13 @@ def c_by_v(color,lista):                                                 ## Reto
             lista.append(string)
             return str(lista[-1])
         
-        elif(color=='FFE68D' and len(lista[-1])==3):                        ## Primeira aparição do amarelo, logo depois de um laranja mais amarelad0, por isso o len do úlitmo item da lista tem que ter tamanho 3("1.1")
+        elif((color == 'FFE68D' or color  == '00FFE68D' ) and len(lista[-1])==3):                        ## Primeira aparição do amarelo, logo depois de um laranja mais amarelad0, por isso o len do úlitmo item da lista tem que ter tamanho 3("1.1")
             value = (lista[-1])
             value = value + '.1'
             lista.append(value)
             return value
         
-        elif(color=='FFE68D' and len(lista[-1])>=9):                        ## Para um aparição depois de uma célula branca, por isso o len do úlitmo item da lista tem que ter tamanho maior que 9
+        elif((color == 'FFE68D' or color  == '00FFE68D' ) and len(lista[-1])>=9):                        ## Para um aparição depois de uma célula branca, por isso o len do úlitmo item da lista tem que ter tamanho maior que 9
             value= lista[find_color(color,lista)]
             aux = int(value[4])                                            ##Pega o último valor da última aparição registrada dessa cor, por isso o 4 ("1.1.1")
             aux +=1
@@ -118,6 +118,15 @@ def c_by_v(color,lista):                                                 ## Reto
                     return aux
              
              
+def File_name(string):
+    if (string.find(".xlsx")):
+        indice =string.find(".xlsx")
+        aux=string[:indice] +"-Copia"+ string[indice:]
+        return aux
+    else:
+        indice =string.find(".xlsm")
+        aux=string[:indice] +"-Copia"+ string[indice:]
+        return aux
 
 
 def Begin():
@@ -134,6 +143,7 @@ def Begin():
   theFile = openpyxl.load_workbook(values['-Pq-'])
   allSheetNames = theFile.sheetnames
   for sheet in allSheetNames:
+      begin=False
       lista.clear()                                    ## Reseta a lista para ser preenchida novamente na próxima sheet
       currentSheet = theFile[sheet]
       if (currentSheet.sheet_state == 'hidden' or currentSheet.sheet_state == 'veryHidden'):
@@ -150,16 +160,20 @@ def Begin():
                     indexed_color = cell.fill.start_color.indexed
                     color_hex = openpyxl.styles.colors.COLOR_INDEX[indexed_color]
                     
-
                 else:
-                    color_hex ='000000'
+                     if(len(lista)!=0):
+                         color_hex ='000000'
                         
                 if(currentSheet[cell_exit].value == None and len(lista) != 0):                          ##Para resolver o problema do código escrever onde não devia
-                    break
+                    begin=False
+                    break 
+                if(color_hex=='FF9900' or color_hex=='00FF9900'):
+                    begin=True
                 if(color_hex in allowed_colors):
-                    cell.value= c_by_v(color_hex,lista)
+                    if(begin==True):
+                        cell.value= c_by_v(color_hex,lista)
                 else:
                     pg.popup_error(f'Cores divergentes da SPE, favor verificar\n Planilha:{currentSheet} célula:A{row}')
                     break
   pg.popup_auto_close("Feito!!")
-  theFile.save(values['-Pq-'])
+  theFile.save(File_name(values['-Pq-']))

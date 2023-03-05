@@ -71,8 +71,6 @@ def open_PQ(element):
   theFile = openpyxl.load_workbook(element)
   allSheetNames = theFile.sheetnames
   for sheet in allSheetNames:
-      if(exit==1):
-         break
       currentSheet = theFile[sheet]
       for row in range(12, currentSheet.max_row + 1):
           cell_name = "{}{}".format("D", row)
@@ -81,7 +79,7 @@ def open_PQ(element):
             cell_auxb = "{}{}".format("B", row)
             cell_value = "{}{}".format("Q", row)
             cell_fm = "{}{}".format("E", row)
-            if(diff_FM(fm_list, str(currentSheet[cell_fm].value))):
+            if(diff_FM(fm_list, str(currentSheet[cell_fm].value)) and currentSheet[cell_fm].value != "E"):
               if(currentSheet[cell_name].value == "-"):
                 Verficador[f'Sem tagg {str(currentSheet[cell_auxb].value) + str(currentSheet[cell_auxc].value)}'] =  Verficador.get(f'Sem tagg {str(currentSheet[cell_auxb].value) + str(currentSheet[cell_auxc].value)}',0) + currentSheet[cell_value].value
               else:
@@ -91,7 +89,6 @@ def open_PQ(element):
                     if(check_duplicates_Pq(aux,cell_name)):
                       Verficador[aux]= f'Sheet:{sheet}:{cell_name}'
             else:
-              exit=1
               break
           
   return Verficador  
@@ -144,6 +141,7 @@ def diff_FM(list,string):
       if(len(list)==0):
         list.append(string)
         return True
+      
       else:
          for element in list:
             if(string==element):
@@ -151,7 +149,7 @@ def diff_FM(list,string):
             else:
               return False
   else:
-      return True
+     return True
             
 
 def open_popup():
