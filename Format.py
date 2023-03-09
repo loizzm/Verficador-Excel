@@ -2,7 +2,7 @@ import openpyxl
 from openpyxl.styles import colors
 import PySimpleGUI as pg 
 
-allowed_colors=['FF9900','00FF9900','FFCC00','00FFCC00','00FFE68D','FFE68D','00FFFF99','FFFF99','000000']  ##Cores permitidas pela SPE
+allowed_colors=['FF9900','00FF9900','FFCC00','00FFCC00','00FFE68D','FFE68D','00FFFF99','FFFF99','000000','00FFFFFF']  ##Cores permitidas pela SPE
 
 def find_color(color,lista):                                            ## Serve para procurar a última vez que uma cor foi encontrada, visto que normalmente existe itens em branco antes das cores principais
       if (color=='FF9900' or color=='00FF9900'):                        ## Nõa há branco descrito nessa função, pois nunca o branco virá entre duas cores diferentes de branco
@@ -81,7 +81,7 @@ def c_by_v(color,lista):                                                 ## Reto
             lista.append(value)
             return(value)
         
-        elif(color == '000000'and len(lista) >= 4):                  ## Para uma parição de células Brancas
+        elif((color == '000000' or color == '00FFFFFF')and len(lista) >= 4):                  ## Para uma parição de células Brancas
             if(len(lista[-1])==7):
                 value = (lista[-1])
                 value = value + '.1'
