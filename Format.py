@@ -1,5 +1,5 @@
 import openpyxl
-from openpyxl.styles import Color, PatternFill
+from openpyxl.styles import PatternFill
 import PySimpleGUI as pg 
 import csv
 import array
@@ -60,10 +60,11 @@ def c_by_v(color,lista):                                                 ## Reto
         
         elif((color == 'FFE68D' or color  == '00FFE68D' ) and (lista[-1].count('.')==4)):                        ## Para um aparição depois de uma célula branca, por isso o len do úlitmo item da lista tem que ter tamanho maior que 9
             value = lista[find_color(color,lista)]
-            aux = int(value[4:])                                            ##Pega o último valor da última aparição registrada dessa cor, por isso o 4 ("1.1.1")
+            index=value.rfind('.')
+            aux = int(value[index+1:])                                            ##Pega o último valor da última aparição registrada dessa cor, por isso o 4 ("1.1.1")
             aux +=1
             string= str(aux)
-            value= value[:4]+string
+            value= value[:index+1]+string
             lista.append(value)
             return(value)
 
@@ -75,10 +76,11 @@ def c_by_v(color,lista):                                                 ## Reto
         
         elif((color == 'FFFF99' or color == '00FFFF99') and (lista[-1].count('.')==4)):                   ## Para uma aparição do amareloa mais fraco depois de um branco, por isso o len > 9
             value= lista[find_color(color,lista)]
-            aux = int(value[6:])
+            index=value.rfind('.')
+            aux = int(value[index+1:])
             aux +=1
             string= str(aux)
-            value= value[:6]+string
+            value= value[:index+1]+string
             lista.append(value)
             return(value)
         
@@ -179,6 +181,7 @@ def Begin():
       lista.clear()
       colors.clear()                                    ## Reseta a lista para ser preenchida novamente na próxima sheet
       currentSheet = theFile[sheet]
+      print(currentSheet)
       if (currentSheet.sheet_state == 'hidden' or currentSheet.sheet_state == 'veryHidden'):
           continue
       for row in range(1, currentSheet.max_row + 1):
@@ -193,6 +196,7 @@ def Begin():
             cell2 = currentSheet[cell_name2]
             cell3 = currentSheet[cell_name3]
             cell4 = currentSheet[cell_name4]
+            print(cell)
             if (type(cell).__name__ != 'MergedCell'):
                 string= str(cell1.value) + str(cell2.value) + str(cell3.value) + str(cell4.value)
                 if(check_pattern_cms(string)):    
