@@ -142,7 +142,7 @@ def csv_create(lista1,lista2):
 def File_name(string):
     if (string.find(".xlsx")!=-1):
         indice =string.find(".xlsx")
-        aux=string[:indice] +"-Copia"+ string[indice:]
+        aux=string[:indice] +"-ITEMIZADO"+ string[indice:]
         return aux
 
 def check_pattern_cms(letter):
@@ -152,13 +152,14 @@ def check_pattern_cms(letter):
      return False      
 
 def row_color(row, color,sheet):
-       for letter in string.ascii_uppercase:
+       	for letter in string.ascii_uppercase:
+            if (letter=='U' or (color == '000000' or color == '00FFFFFF')):
+                break
             cell_name = "{}{}".format(letter, row)
             cell = sheet[cell_name]
             fill = PatternFill(start_color=color, end_color=color, fill_type="solid")
             cell.fill= fill
-            if (letter=='U'):
-                break
+            
 
 def Begin():
   pg.theme("DarkBlue")
